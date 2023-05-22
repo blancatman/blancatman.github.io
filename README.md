@@ -130,10 +130,7 @@ function accelerate(n) {
 </script> 
   <br> <button onmousedown="accelerate(-0.2)" onmouseup="accelerate(0.05)">ACCELERATE</button> 
   <p>Use the ACCELERATE button to stay in the air</p> 
-  <p>How long can you stay alive? </p>Comment your Score!
-  <p> </p>Credits to W3Schools for helping me create this game!
-  <p> <a href="https://www.w3schools.com">Visit them here!</a> </p>
-  <p>Or visit w3schools.com!</p> 
+  
   <p></p> 
   <p></p> 
  </body>
