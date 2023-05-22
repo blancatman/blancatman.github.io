@@ -1,17 +1,56 @@
-<html>
- <head> 
-  <meta charset="UTF-8"> 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.js"></script> 
-  <script src="https://threejsfundamentals.org/threejs/resources/threejs/r113/examples/js/controls/OrbitControls.js"></script> 
-  <script src="https://cdn.bootcss.com/cannon.js/0.6.2/cannon.js"></script> 
- </head> 
- <body> 
-  <div id="author"> 
-   <p>Made with love by 木本</p> 
-  </div> 
-  <video id="video" loop="" crossorigin="anonymous" playsinline="" style="display:none"> <!--         <source src="https://threejs.org/examples/textures/sintel.ogv" type="video/ogg; codecs=&quot;theora, vorbis&quot;"> --> 
-   <source src="https://oliverxh.github.io/video/video_01.mp4" type="video/mp4; codecs=&quot;avc1.42E01E, mp4a.40.2&quot;"> 
-  </video> <button type="button" id="start">S T A R T</button> 
-  <div id="viewport"></div> 
- </body>
-</html>
+#python 3.7.1
+def ip2int(ip):
+    try:
+        oc = [int(e) for e in ip.split(".")]
+        if len(oc)!=4: raise IndexError
+        for o in oc:
+            if o<0 or o>255: 
+                raise ValueError
+        n = oc[0]<<24 | oc[1]<<16 | oc[2]<<8 | oc[3]
+    except Exception as e:
+        raise ValueError("invalid IP: A.B.C.D 0<=octet<=255")
+    else:
+        return n
+
+def int2ip(n):
+    try:
+        if n<0 or n>4294967295 : raise ValueError
+        ip = str(n>>24 & 255)
+        ip += "." + str(n>>16 & 255)
+        ip += "." + str(n>>8 & 255)
+        ip += "." + str(n & 255)
+    except Exception as e:
+        raise ValueError("number must be integer between 0 to 4,294,967,295")
+    else:
+        return ip
+
+def cidr2int(s):
+    n = 0
+    try:
+        if s<8 or s>32: raise ValueError
+        for i in range(32-s,32): n |= 1<<i
+    except Exception as e:
+        raise ValueError("number must be integer between 8 to 32 ")
+    else:
+        return n
+
+def getnetid(ipn, netmask):
+    return ipn & netmask
+
+def getbroadcast(netid, netmask):
+    return 4294967295 ^ netmask | netid
+
+ip, cidr = (e.strip() for e in input("Enter Your IP (A.B.C.D/N):").split("/"))
+cidr = int(cidr)
+ipn = ip2int(ip)
+netmask = cidr2int(cidr)
+netid = getnetid(ipn, netmask)
+broadcast = getbroadcast(netid, netmask)
+firstip = netid+1
+lastip = broadcast-1
+
+print("Net ID       :", int2ip(netid))
+print("Netmask      :", int2ip(netmask))
+print("BroadCast IP :", int2ip(broadcast))
+print("First IP     :", int2ip(firstip))
+print("Last IP      :", int2ip(lastip))
